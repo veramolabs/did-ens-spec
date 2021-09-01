@@ -6,7 +6,7 @@
 
 Version: 0.1
 
-This specification is still work in progress and the specification may change. Please don't use for production use case cases. 
+This specification is still work in progress and the specification is subject to change. Don't use this for production use case cases.
 
 # DID ENS Specification
 
