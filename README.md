@@ -192,7 +192,7 @@ For `did:ens:alice.eth` with DID specific TEXT records added, the DID Document w
 }
 ```
 
-The ENS needs to have the following TEXT records set:
+The following TEXT records are set:
 
 - `org.w3c.did.verificationRelationship`: TBD
 - `org.w3c.did:verificationMethod`: TBD
