@@ -4,7 +4,7 @@
 
 # Status
 
-Version: 0.1
+**Version**: 0.1
 
 This specification is still work in progress and the specification is subject to change. Don't use this for production use case cases.
 
