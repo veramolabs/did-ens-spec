@@ -1,7 +1,6 @@
 # Authors
 
 - [Oliver Terbu](https://github.com/awoie) ([ConsenSys MESH](https://mesh.xyz))
-- TBD
 
 # DID ENS Specification
 
@@ -61,7 +60,7 @@ The following nameed TEXT records are defined:
 
 ### CREATE
 
-See ENS on how to register ENS names.
+See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to register ENS names.
 
 ### READ
 
@@ -93,7 +92,6 @@ The default service will always include the ENS service as follows:
   }
 }
 ```
-> TBD: Other `profileService` identifiers MAY include `CeramicIDX`, `TextileProfile`, `VeramoAgent` ... The `Web3PublicProfile` service will enable the DID to be the main discovery point where public profile information is stored. We probably need another spec + registry for that. Perhaps we could use CASA and create some CAIP-xx spec. Needs to be discussed.
 
 The `id` of the default service is the concatenation of the ENS DID followed by the `#Web3PublicProfile-` and the hex representation of `sha256(blockchainAccountId)`. Additional services that MAY be added MUST not use that service `id` and will be ignored in the DID Document.
 
@@ -197,25 +195,25 @@ For `did:ens:alice.eth` with DID specific TEXT records added, the DID Document w
 }
 ```
 
-The following TEXT records are set:
+The following TEXT records have to be set:
 
-- `org.w3c.did.verificationRelationship`: TBD
-- `org.w3c.did:verificationMethod`: TBD
+- `org.w3c.did.verificationRelationship`
+- `org.w3c.did:verificationMethod`
 
 ### UPDATE
 
-See ENS on how to add TEXT records.
+See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to add TEXT records.
 
 ### DELETE
 
-See ENS on how to delete ENS names or end the lease.
+See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to delete ENS names or end the lease.
 
 ## Privacy Considerations
 
-See ENS.
+See [ENS](https://docs.ens.domains/dapp-developer-guide).
 
 Furthermore, when any data (e.g. W3C Verifiable Credentials) is associated with ENS DIDs, sharing that data would also impose sharing the onchain data graph (e.g. transaction history, NFTs etc.) of the ETH account that owns the ENS name.
 
 ## Security Considerations
 
-See ENS
+See [ENS](https://docs.ens.domains/dapp-developer-guide)
