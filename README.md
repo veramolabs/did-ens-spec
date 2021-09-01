@@ -83,9 +83,13 @@ The following named TEXT records are defined:
 
 See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to register ENS names.
 
+> :warning: Issue [#4](https://github.com/veramolabs/did-ens-spec/issues/4): provide more details on ENS registration.
+
 ### READ
 
 DID resolution will perform ENS resolution for a given ENS name. Additionally, the DID resolver will then retrieve the DID specific TEXT records for the ENS name and add default values for service endpoints and verification methods.
+
+> :warning: Issue [#4](https://github.com/veramolabs/did-ens-spec/issues/4): provide more details on ENS resolution.
 
 The default verification method will always include the owner of the ENS name as follows:
 
@@ -222,13 +226,18 @@ The following TEXT records have to be set:
 - `org.w3c.did:verificationMethod`
 
 > :warning: Issue [#3](https://github.com/veramolabs/did-ens-spec/issues/3): More details on TEXT records and more examples for other service endpoints and authentication relationships.
+
 ### UPDATE
 
 See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to add TEXT records.
 
+> :warning: Issue [#4](https://github.com/veramolabs/did-ens-spec/issues/4): provide more details on ENS TEXT records.
+
 ### DELETE
 
 See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to delete ENS names or end the lease.
+
+> :warning: Issue [#4](https://github.com/veramolabs/did-ens-spec/issues/4): provide more details on how the lease ends or ownership is transferred.
 
 ## Privacy Considerations
 
