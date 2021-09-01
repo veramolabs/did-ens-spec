@@ -72,7 +72,7 @@ The following named TEXT records are defined:
   OPTIONAL. A set of [verification methods](https://www.w3.org/TR/did-core/#verification-methods) as per W3C DID Core specification.
   
   >NOTE: the owner of the ENS name will be automatically propagated as a verification method during DID resolution.
-  
+
 - `org.w3c.did.verificationRelationship`
   
   OPTIONAL. A map of [verification relationship](https://www.w3.org/TR/did-core/#verification-relationships) as per W3C DID Core specification to a set of verification relationship identifiers (`id` property).
@@ -241,7 +241,7 @@ Using personal identifiable information as DID Method specific identifiers (e.g.
 
 ## Security Considerations
 
-See [ENS](https://docs.ens.domains/dapp-developer-guide)
+See [ENS](https://docs.ens.domains/dapp-developer-guide).
 
 ENS names are non-fungible and transferrable. When the owner of the ENS name changes, the authorative keys will also change. This needs to be considered when used in conjunction with verifiable data where the DID is embedded, e.g., W3C Verifiable Credentials.
 
