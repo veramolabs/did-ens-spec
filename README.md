@@ -59,7 +59,7 @@ ENS names are first normalized, using a process called UTS-46 normalization. Thi
 
 ENS names can have TEXT records. This specification defines TEXT record names that will have an impact on DID resolution of ENS DIDs.
 
-The following nameed TEXT records are defined:
+The following named TEXT records are defined:
 
 - `org.w3c.did.service`
   OPTIONAL. A set of [services](https://www.w3.org/TR/did-core/#services) as per W3C DID Core specification.
