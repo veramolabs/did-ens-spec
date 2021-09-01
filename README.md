@@ -2,6 +2,12 @@
 
 - [Oliver Terbu](https://github.com/awoie) ([ConsenSys MESH](https://mesh.xyz))
 
+# Status
+
+Version: 0.1
+
+This specification is still work in progress and the specification may change. Please don't use for production use case cases. 
+
 # DID ENS Specification
 
 The Ethereum Name Service (ENS) is a distributed, open, and extensible naming system based on the Ethereum blockchain.
