@@ -221,6 +221,7 @@ The following TEXT records have to be set:
 - `org.w3c.did.verificationRelationship`
 - `org.w3c.did:verificationMethod`
 
+> :warning: Issue [#3](https://github.com/veramolabs/did-ens-spec/issues/3): More details on TEXT records and more examples for other service endpoints and authentication relationships.
 ### UPDATE
 
 See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to add TEXT records.
