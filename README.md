@@ -234,6 +234,6 @@ Using personal identifiable information as DID Method specific identifiers (e.g.
 
 ## Security Considerations
 
-ENS names are non-fungible and transferrable. When the owner of the ENS name changes, the authorative keys will also change. This needs to be considered when used in conjunction with verifiable data where the DID is embedded, e.g., W3C Verifiable Credentials.
-
 See [ENS](https://docs.ens.domains/dapp-developer-guide)
+
+ENS names are non-fungible and transferrable. When the owner of the ENS name changes, the authorative keys will also change. This needs to be considered when used in conjunction with verifiable data where the DID is embedded, e.g., W3C Verifiable Credentials.
