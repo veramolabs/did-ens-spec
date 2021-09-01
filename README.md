@@ -21,7 +21,7 @@ Because of the hierarchal nature of ENS, anyone who owns a domain at any level m
 
 ENS is deployed on the Ethereum main network and on several test networks.
 
-This DID method intends to wrap ENS names as DIDs.
+The Ethereum community has established ENS names as their identifiers (see [Etherscan](https://etherscan.io/enslookup)) for web3 projects. This DID method specification intends to wrap existing ENS names as DIDs to be interoperable with applications relying on Decentralized Identifiers.
 
 ## DID Method Name
 
