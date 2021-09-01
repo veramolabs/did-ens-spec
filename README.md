@@ -60,11 +60,17 @@ ENS names can have TEXT records. This specification defines TEXT record names th
 The following nameed TEXT records are defined:
 
 - `org.w3c.did.service`
-  OPTIONAL. A set of [services](https://www.w3.org/TR/did-core/#services) as per W3C DID Core specification. NOTE: the ENS Service will be automatically propagated as a service during DID resolution.
+  OPTIONAL. A set of [services](https://www.w3.org/TR/did-core/#services) as per W3C DID Core specification.
+
+  > NOTE: the ENS Service will be automatically propagated as a service during DID resolution.
 - `org.w3c.did.verificationMethod`
-  OPTIONAL. A set of [verification methods](https://www.w3.org/TR/did-core/#verification-methods) as per W3C DID Core specification. NOTE: the owner of the ENS name will be automatically propagated as a verification method during DID resolution.
+  OPTIONAL. A set of [verification methods](https://www.w3.org/TR/did-core/#verification-methods) as per W3C DID Core specification.
+  
+  >NOTE: the owner of the ENS name will be automatically propagated as a verification method during DID resolution.
 - `org.w3c.did.verificationRelationship`
-  OPTIONAL. A map of [verification relationship](https://www.w3.org/TR/did-core/#verification-relationships) as per W3C DID Core specification to a set of verification relationship identifiers (`id` property). NOTE: the verification method that relates to the owner of the ENS name can be used for all verification relationships.
+  OPTIONAL. A map of [verification relationship](https://www.w3.org/TR/did-core/#verification-relationships) as per W3C DID Core specification to a set of verification relationship identifiers (`id` property).
+  
+  >NOTE: the verification method that relates to the owner of the ENS name can be used for all verification relationships.
 
 ### CREATE
 
