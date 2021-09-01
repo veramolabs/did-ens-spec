@@ -11,13 +11,13 @@ This specification is still work in progress and the specification is subject to
 # DID ENS Specification
 
 The Ethereum Name Service (ENS) is a distributed, open, and extensible naming system based on the Ethereum blockchain.
-ENS’s job is to map human-readable names like ‘alice.eth’ to machine-readable identifiers such as Ethereum addresses, other cryptocurrency addresses, content hashes, and metadata.
+ENS’s job is to map human-readable names like ’some.eth’ to machine-readable identifiers such as Ethereum addresses, other cryptocurrency addresses, content hashes, and metadata.
 
 ENS has similar goals to DNS, the Internet’s Domain Name Service, but has significantly different architecture due to the capabilities and constraints provided by the Ethereum blockchain. Like DNS, ENS operates on a system of dot-separated hierarchical names called domains, with the owner of a domain having full control over subdomains.
 
 Top-level domains, like ‘.eth’ and ‘.test’, are owned by smart contracts called registrars, which specify rules governing the allocation of their subdomains. Anyone may, by following the rules imposed by these registrar contracts, obtain ownership of a domain for their own use. ENS also supports importing in DNS names already owned by the user for use on ENS.
 
-Because of the hierarchal nature of ENS, anyone who owns a domain at any level may configure subdomains - for themselves or others - as desired. For instance, if Alice owns 'alice.eth', she can create 'pay.alice.eth' and configure it as she wishes.
+Because of the hierarchal nature of ENS, anyone who owns a domain at any level may configure subdomains - for themselves or others - as desired. For instance, if Some owns 'some.eth', she can create 'pay.some.eth' and configure it as she wishes.
 
 ENS is deployed on the Ethereum main network and on several test networks.
 
@@ -39,15 +39,15 @@ ENS DIDs have the following format:
   name    := <ENS-name>
 ```
 
-If the network is omitted, the network defaults to mainnet, so a `did:ens:alice.eth` is equivalent to `did:ens:mainnet:alice.eth`. However, the canonical form is `did:ens:mainnet:alice.eth`.
+If the network is omitted, the network defaults to mainnet, so a `did:ens:some.eth` is equivalent to `did:ens:mainnet:some.eth`. However, the canonical form is `did:ens:mainnet:some.eth`.
 
 ENS names are first normalized, using a process called UTS-46 normalization. This ensures that upper- and lower-case names are treated equivalently, and that invalid characters are prohibited.
 
 ### Examples
 
 ```
-- did:ens:alice.eth
-- did:ens:my.alice.eth
+- did:ens:some.eth
+- did:ens:my.some.eth
 - ...
 ```
 
@@ -107,7 +107,7 @@ See ENS on how to resolve ENS names and how to resolve TEXT records for ENS name
 
 #### Example (no TEXT records)
 
-For `did:ens:alice.eth` (with no TEXT records added), the DID Document would look as follows:
+For `did:ens:some.eth` (with no TEXT records added), the DID Document would look as follows:
 
 ```json
 {
@@ -116,87 +116,87 @@ For `did:ens:alice.eth` (with no TEXT records added), the DID Document would loo
     "https://w3id.org/ens/v1",
     "https://w3id.org/casa/profile-services/v1"
   ],
-  "id": "did:ens:alice.eth",
-  "canonicalId": "did:ens:mainnet:alice.eth",
+  "id": "did:ens:some.eth",
+  "canonicalId": "did:ens:mainnet:some.eth",
   "verificationMethod": [{
-    "id": "did:ens:mainnet:alice.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
+    "id": "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
     "type": "EcdsaSecp256k1RecoveryMethod2020",
-    "controller": "did:ens:mainnet:alice.eth",
+    "controller": "did:ens:mainnet:some.eth",
     "blockchainAccountId": "eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb"
   }],
   "service": [{
-    "id":"did:ens:mainnet:alice.eth#Web3PublicProfile-5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
+    "id":"did:ens:mainnet:some.eth#Web3PublicProfile-5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
     "type": "Web3PublicProfile", 
     "serviceEndpoint": { 
       "profileService": "ENS",
-      "ensName": "alice.eth",
+      "ensName": "some.eth",
       "network": "mainnet" 
     }
   }],
   "authentication": [
-    "did:ens:mainnet:alice.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
   ],
   "assertionMethod": [
-    "did:ens:mainnet:alice.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
   ],
   "capabilityInvocation": [
-    "did:ens:mainnet:alice.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
   ],
   "capabilityDelegation": [
-    "did:ens:mainnet:alice.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
   ]
 }
 ```
 
 #### Example (with keyAgreementKey)
 
-For `did:ens:alice.eth` with DID specific TEXT records added, the DID Document would look as follows:
+For `did:ens:some.eth` with DID specific TEXT records added, the DID Document would look as follows:
 
 ```json
 {
   "@context": [
     "https://www.w3.org/ns/did/v1",
     "https://w3id.org/ens/v1",
-    "https://casa-tbd.org/profile-services/v1"
+    "https://w3id.org/casa/profile-services/v1"
   ],
-  "id": "did:ens:alice.eth",
-  "canonicalId": "did:ens:mainnet:alice.eth",
+  "id": "did:ens:some.eth",
+  "canonicalId": "did:ens:mainnet:some.eth",
   "verificationMethod": [{
-      "id": "did:ens:mainnet:alice.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
+      "id": "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
       "type": "EcdsaSecp256k1RecoveryMethod2020",
-      "controller": "did:ens:mainnet:alice.eth",
+      "controller": "did:ens:mainnet:some.eth",
       "blockchainAccountId": "eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb"
     },
     {
-      "id": "did:ens:mainnet:alice.eth#zC9ByQ8aJs8vrNXyDhPHHNNMSHPcaSgNpjjsBYpMMjsTdS",
+      "id": "did:ens:mainnet:some.eth#zC9ByQ8aJs8vrNXyDhPHHNNMSHPcaSgNpjjsBYpMMjsTdS",
       "type": "X25519KeyAgreementKey2019", 
-      "controller": "did:ens:mainnet:alice.eth",
+      "controller": "did:ens:mainnet:some.eth",
       "publicKeyMultibase": "z9hFgmPVfmBZwRvFEyniQDBkz9LmV7gDEqytWyGZLmDXE" 
     }
   ],
   "service": [{
-    "id":"did:ens:mainnet:alice.eth#Web3PublicProfile-5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
+    "id":"did:ens:mainnet:some.eth#Web3PublicProfile-5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
     "type": "Web3PublicProfile", 
     "serviceEndpoint": { 
       "profileService": "ENS",
-      "ensName": "alice.eth",
+      "ensName": "some.eth",
       "network": "mainnet" 
     }
   }],
   "authentication": [
-    "did:ens:mainnet:alice.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
   ],
   "assertionMethod": [
-    "did:ens:mainnet:alice.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
   ],
   "capabilityInvocation": [
-    "did:ens:mainnet:alice.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
   ],
   "capabilityDelegation": [
-    "did:ens:mainnet:alice.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
   ],
   "keyAgreementKey": [
-    "did:ens:mainnet:alice.eth#zC9ByQ8aJs8vrNXyDhPHHNNMSHPcaSgNpjjsBYpMMjsTdS"  
+    "did:ens:mainnet:some.eth#zC9ByQ8aJs8vrNXyDhPHHNNMSHPcaSgNpjjsBYpMMjsTdS"  
   ]
 }
 ```
@@ -218,7 +218,11 @@ See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to delete ENS na
 
 See [ENS](https://docs.ens.domains/dapp-developer-guide).
 
-Furthermore, when any data (e.g. W3C Verifiable Credentials) is associated with ENS DIDs, sharing that data would also impose sharing the onchain data graph (e.g. transaction history, NFTs etc.) of the ETH account that owns the ENS name.
+When any data (e.g. W3C Verifiable Credentials) is associated with ENS DIDs, sharing that data would also impose sharing the onchain data graph (e.g. transaction history, NFTs etc.) of the ETH account that owns the ENS name.
+
+Using personal identifiable information as DID Method specific identifiers (e.g. some.eth) discloses personal information every time the DID is shared with a counter party. This specification DOES NOT endorse the use of ENS names which allows easy correlation with real world human beings. 
+
+> NOTE: The Ethereum community is already using ENS names for individuals.
 
 ## Security Considerations
 
