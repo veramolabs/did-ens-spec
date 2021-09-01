@@ -43,6 +43,8 @@ ENS DIDs have the following format:
 
 If the network is omitted, the network defaults to mainnet, so a `did:ens:some.eth` is equivalent to `did:ens:mainnet:some.eth`. However, the canonical form is `did:ens:mainnet:some.eth`.
 
+> :warning: Issue [#2](https://github.com/veramolabs/did-ens-spec/issues/2): should we consider did:pkh as the canonical id?
+
 ENS names are first normalized, using a process called UTS-46 normalization. This ensures that upper- and lower-case names are treated equivalently, and that invalid characters are prohibited.
 
 ### Examples
