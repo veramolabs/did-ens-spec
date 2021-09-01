@@ -104,7 +104,8 @@ For `did:ens:alice.eth` (with no TEXT records added), the DID Document would loo
 {
   "@context": [
     "https://www.w3.org/ns/did/v1",
-    "https://w3id.org/ens/v1"
+    "https://w3id.org/ens/v1",
+    "https://casa-tbd.org/profile-services/v1"
   ],
   "id": "did:ens:alice.eth",
   "canonicalId": "did:ens:mainnet:alice.eth",
@@ -146,7 +147,8 @@ For `did:ens:alice.eth` with DID specific TEXT records added, the DID Document w
 {
   "@context": [
     "https://www.w3.org/ns/did/v1",
-    "https://w3id.org/ens/v1"
+    "https://w3id.org/ens/v1",
+    "https://casa-tbd.org/profile-services/v1"
   ],
   "id": "did:ens:alice.eth",
   "canonicalId": "did:ens:mainnet:alice.eth",
