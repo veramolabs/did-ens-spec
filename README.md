@@ -23,7 +23,7 @@ ENS is deployed on the Ethereum main network and on several test networks.
 
 The Ethereum community has established ENS names as their identifiers (see [Etherscan](https://etherscan.io/enslookup)) for web3 projects. This DID method specification has two purposes:
  1) to wrap existing ENS names as DIDs to be interoperable with applications relying on Decentralized Identifiers
- 2) to add DID capabilities such as services and verification methods to ENS names.
+ 2) to define a canonical way to add DID capabilities such as services and verification methods to ENS names.
 
 ## DID Method Name
 
