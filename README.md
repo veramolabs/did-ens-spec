@@ -4,7 +4,7 @@
 
 # Status
 
-**Version**: 0.1
+**Version**: 0.1.1
 
 :warning: This specification is still work in progress and the specification is subject to change. Don't use this for production use case cases. :warning:
 
@@ -63,13 +63,13 @@ The following named TEXT records are defined:
 
 - `org.w3c.did.service`
 
-  OPTIONAL. A set of [services](https://www.w3.org/TR/did-core/#services) as per W3C DID Core specification.
+  OPTIONAL. A set of [services](https://www.w3.org/TR/did-core/#services) as per W3C DID Core specification. The service `id` property MAY be omitted. In that case the DID resolver will generate a canonical value for the specific service entry.
 
   > NOTE: the ENS Service will be automatically propagated as a service during DID resolution.
 
 - `org.w3c.did.verificationMethod`
   
-  OPTIONAL. A set of [verification methods](https://www.w3.org/TR/did-core/#verification-methods) as per W3C DID Core specification.
+  OPTIONAL. A set of [verification methods](https://www.w3.org/TR/did-core/#verification-methods) as per W3C DID Core specification. Verification method `id` property values MUST be relative DID URIs, e.g., `#my-key-id-1234`. 
   
   >NOTE: the owner of the ENS name will be automatically propagated as a verification method during DID resolution.
 
@@ -167,7 +167,7 @@ For `did:ens:some.eth` (with no TEXT records added), the DID Document would look
 }
 ```
 
-#### Example (with keyAgreementKey)
+#### Example (with keyAgreement)
 
 For `did:ens:some.eth` with DID specific TEXT records added, the DID Document would look as follows:
 
@@ -214,7 +214,7 @@ For `did:ens:some.eth` with DID specific TEXT records added, the DID Document wo
   "capabilityDelegation": [
     "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
   ],
-  "keyAgreementKey": [
+  "keyAgreement": [
     "did:ens:mainnet:some.eth#zC9ByQ8aJs8vrNXyDhPHHNNMSHPcaSgNpjjsBYpMMjsTdS"  
   ]
 }
