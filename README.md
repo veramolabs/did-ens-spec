@@ -245,9 +245,9 @@ See [ENS](https://docs.ens.domains/dapp-developer-guide).
 
 When any data (e.g. W3C Verifiable Credentials) is associated with ENS DIDs, sharing that data would also impose sharing the onchain data graph (e.g. transaction history, NFTs etc.) of the ETH account that owns the ENS name.
 
-Using personal identifiable information as DID Method specific identifiers (e.g. some.eth) discloses personal information every time the DID is shared with a counter party. This specification DOES NOT endorse the use of ENS names which allows easy correlation with real world human beings. 
+Using personal identifiable information as DID Method specific identifiers (e.g. alice.eth) discloses personal information every time the DID is shared with a counter party. This specification DOES NOT endorse the use of ENS names that correlate directly with real world human beings. 
 
-> NOTE: The Ethereum community is already using ENS names for individuals.
+> NOTE: The Ethereum community is already using ENS names for individuals (e.g. vitalik.eth).
 
 ## Security Considerations
 
