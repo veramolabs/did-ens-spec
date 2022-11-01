@@ -1,12 +1,19 @@
 # Authors
 
-- [Oliver Terbu](https://github.com/awoie) ([ConsenSys MESH](https://mesh.xyz))
+- [Oliver Terbu](https://github.com/awoie)
+- [Nick Reynolds](https://github.com/nickreynolds) ([Veramo](https://veramo.io))
 
 # Status
 
-**Version**: 0.1.1
+**Version**: 0.2.0
 
 :warning: This specification is still work in progress and the specification is subject to change. Don't use this for production use case cases. :warning:
+
+# Abstract
+
+This document defines a DID Specification called `did:ens` that utilizes the capabilities of the Ethereum Name Service (ENS) as well as existing `did:ethr` functionality to provide a DID Method that is secure, decentralized, supports DID CRUD operations such as rotating keys and declaring service endpoints, and links to the "username-like" identifiers of ENS.
+
+Like `did:ethr`, this DID is self-soverign, compatible with any EVM network, partially resolvable on-chain, while minimizing (to some degree) the cost of updates to the DIDDocument. By linking this with ENS, we augment the capabilities of `did:ethr` with the decentralzied management of unique and *recognizable* identifiers.
 
 # DID ENS Specification
 
@@ -21,7 +28,7 @@ Because of the hierarchal nature of ENS, anyone who owns a domain at any level m
 
 ENS is deployed on the Ethereum main network and on several test networks.
 
-The Ethereum community has established ENS names as their identifiers (see [Etherscan](https://etherscan.io/enslookup)) for web3 projects. This DID method specification has two purposes:
+Some in the Ethereum community have established ENS names as their identifiers (see [Etherscan](https://etherscan.io/enslookup)) for web3 projects. This DID method specification has two purposes:
  1. to wrap existing ENS names as DIDs to be interoperable with applications relying on Decentralized Identifiers
  2. to define a canonical way to augment ENS names with DID capabilities such as services and verification methods.
 
@@ -36,14 +43,12 @@ A DID that uses this method MUST begin with the following prefix: did:ens. Per t
 ENS DIDs have the following format:
 
 ```
-  DID     := did:ens[:<network>]:<name>
-  network := mainnet | rinkeby | ropsten | goerli | ...
+  DID     := did:ens:[<network>/<chainId>]:<name>
+  network/chainId := mainnet | arbitrum | goerli | 0x1 | 0x5 ...
   name    := <ENS-name>
 ```
 
-If the network is omitted, the network defaults to mainnet, so a `did:ens:some.eth` is equivalent to `did:ens:mainnet:some.eth`. However, the canonical form is `did:ens:mainnet:some.eth`.
-
-> :warning: Issue [#2](https://github.com/veramolabs/did-ens-spec/issues/2): should we consider did:pkh as the canonical id?
+If the network is omitted, the network is assumed to be ethereum mainnet, so a `did:ens:some.eth` is equivalent to `did:ens:mainnet:some.eth`. However, the canonical form is `did:ens:mainnet:some.eth`.
 
 ENS names are first normalized, using a process called UTS-46 normalization. This ensures that upper- and lower-case names are treated equivalently, and that invalid characters are prohibited.
 
@@ -55,74 +60,30 @@ ENS names are first normalized, using a process called UTS-46 normalization. Thi
 - ...
 ```
 
+### Connection to `did:ethr`
+
+In order to provide the most functionality with the least resource expeniture for implementers, we rely heavily on a connection between `did:ens` and `did:ethr` (which already has available implementations for resolving and managing DIDs). In particular, `did:ens` is treated as a "wrapper" around `did:ethr`. Since every ENS name resolves a document that includes a field `controller`, which corresponds to the ethereum address that controls the ENS name, we can simply treat the `did:ens` as a pointer to the `did:ethr` of the associated `controller`.
+
+Because `did:ethr` resolution relies on the existence of a deployed `ethr-did-registry` contract, this DID method should only be considered resolvable on EVM chains that have *both* an `ENS Registry` and an `Ethr DID Registry` contract deployment.
+
 ## CRUD Operations
-
-ENS names can have TEXT records. This specification defines TEXT record names that will have an impact on DID resolution of ENS DIDs.
-
-The following named TEXT records are defined:
-
-- `org.w3c.did.service`
-
-  OPTIONAL. A set of [services](https://www.w3.org/TR/did-core/#services) as per W3C DID Core specification. The service `id` property MAY be omitted. In that case the DID resolver will generate a canonical value for the specific service entry.
-
-  > NOTE: the ENS Service will be automatically propagated as a service during DID resolution.
-
-- `org.w3c.did.verificationMethod`
-  
-  OPTIONAL. A set of [verification methods](https://www.w3.org/TR/did-core/#verification-methods) as per W3C DID Core specification. Verification method `id` property values MUST be relative DID URIs, e.g., `#my-key-id-1234`. 
-  
-  >NOTE: the owner of the ENS name will be automatically propagated as a verification method during DID resolution.
-
-- `org.w3c.did.verificationRelationship`
-  
-  OPTIONAL. A map of [verification relationship](https://www.w3.org/TR/did-core/#verification-relationships) as per W3C DID Core specification to a set of verification relationship identifiers (`id` property).
-  
-  >NOTE: the verification method that relates to the owner of the ENS name can be used for all verification relationships.
-
-### CREATE
-
-See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to register ENS names.
-
-> :warning: Issue [#4](https://github.com/veramolabs/did-ens-spec/issues/4): provide more details on ENS registration.
 
 ### READ
 
-DID resolution will perform ENS resolution for a given ENS name. Additionally, the DID resolver will then retrieve the DID specific TEXT records for the ENS name and add default values for service endpoints and verification methods.
+DID resolution will perform ENS resolution for a given ENS name, on the specified chain. Then, perform `did:ethr` resolution of the ENS name's `controller` Ethereum address (on the same chain).
 
-> :warning: Issue [#4](https://github.com/veramolabs/did-ens-spec/issues/4): provide more details on ENS resolution.
+The DID Document returned is simply the DID Document of the `did:ethr:<controller>`, with the top-level `id` field changed to `did:ens:<ensname>`
 
-The default verification method will always include the owner of the ENS name as follows:
+### CREATE / DELETE
 
-```json
-{
-  "id": "<DID-ENS>#<sha256-of-blockchainAccountId>",
-  "type": "EcdsaSecp256k1RecoveryMethod2020",
-  "controller": "<DID-ENS>",
-  "blockchainAccountId": "<CAIP-10>"
-}
-```
+The Create operation is implicit. If an ENS name can be resolved, and has a controller, then it has a `did:ens`, since the controller already has a `did:ethr`. In this way, 
+`did:ens` DIDs are not "created", and cannot be destroyed (except possibly by setting the `controller` to the Null Address)
 
-The `id` of the default verification method is the concatenation of the ENS DID followed by the `#` and the hex representation of `sha256(blockchainAccountId)`. Additional verification methods that MAY be added MUST not use that verification method `id` and will be ignored in the DID Document.
+### UPDATE
 
-The default service will always include the ENS service as follows:
+The Update operation is largely handled by the `did:ethr` specification. When adding/removing a key or service for a `did:ens`, simply add/remove it from the associated `did:ethr`
 
-```json
-{
-  "id":"<DID-ENS>#Web3PublicProfile-<sha256-of-blockchainAccountId>",
-  "type": "Web3PublicProfile", 
-  "serviceEndpoint": { 
-    "profileService": "ENS",
-    "ensName": "<ENS-name>",
-    "network": "mainnet" 
-  }
-}
-```
-
-The `id` of the default service is the concatenation of the ENS DID followed by the `#Web3PublicProfile-` and the hex representation of `sha256(blockchainAccountId)`. Additional services that MAY be added MUST not use that service `id` and will be ignored in the DID Document.
-
-If the DID specific TEXT records are malformed, the entire TEXT record will be ignored in the DID resolution process.
-
-See ENS on how to resolve ENS names and how to resolve TEXT records for ENS names.
+It could also be considered part of the Update operation when the controller of an ENS name is changed, as that will change the DID Document resolved.
 
 #### Example (no TEXT records)
 
@@ -132,37 +93,22 @@ For `did:ens:some.eth` (with no TEXT records added), the DID Document would look
 {
   "@context": [
     "https://www.w3.org/ns/did/v1",
-    "https://w3id.org/ens/v1",
-    "https://w3id.org/casa/profile-services/v1"
+    "https://w3id.org/security/suites/secp256k1recovery-2020/v2"
   ],
   "id": "did:ens:some.eth",
-  "canonicalId": "did:ens:mainnet:some.eth",
-  "verificationMethod": [{
-    "id": "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
-    "type": "EcdsaSecp256k1RecoveryMethod2020",
-    "controller": "did:ens:mainnet:some.eth",
-    "blockchainAccountId": "eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb"
-  }],
-  "service": [{
-    "id":"did:ens:mainnet:some.eth#Web3PublicProfile-5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
-    "type": "Web3PublicProfile", 
-    "serviceEndpoint": { 
-      "profileService": "ENS",
-      "ensName": "some.eth",
-      "network": "mainnet" 
+  "verificationMethod": [
+    {
+      "id": "did:ethr:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb#controller",
+      "type": "EcdsaSecp256k1RecoveryMethod2020",
+      "controller": "did:ethr:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb",
+      "blockchainAccountId": "eip155:1:0xab16a96D359eC26a11e2C2b3d8f8B8942d5Bfcdb"
     }
-  }],
+  ],
   "authentication": [
-    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ethr:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb#controller"
   ],
   "assertionMethod": [
-    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
-  ],
-  "capabilityInvocation": [
-    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
-  ],
-  "capabilityDelegation": [
-    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ethr:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb#controller"
   ]
 }
 ```
@@ -175,69 +121,60 @@ For `did:ens:some.eth` with DID specific TEXT records added, the DID Document wo
 {
   "@context": [
     "https://www.w3.org/ns/did/v1",
-    "https://w3id.org/ens/v1",
-    "https://w3id.org/casa/profile-services/v1"
+    "https://w3id.org/security/suites/secp256k1recovery-2020/v2"
   ],
   "id": "did:ens:some.eth",
-  "canonicalId": "did:ens:mainnet:some.eth",
-  "verificationMethod": [{
-      "id": "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
+  "verificationMethod": [
+    {
+      "id": "did:ethr:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb#controller",
       "type": "EcdsaSecp256k1RecoveryMethod2020",
-      "controller": "did:ens:mainnet:some.eth",
-      "blockchainAccountId": "eip155:1:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb"
+      "controller": "did:ethr:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb",
+      "blockchainAccountId": "eip155:1:0xab16a96D359eC26a11e2C2b3d8f8B8942d5Bfcdb"
     },
     {
-      "id": "did:ens:mainnet:some.eth#zC9ByQ8aJs8vrNXyDhPHHNNMSHPcaSgNpjjsBYpMMjsTdS",
+      "id": "did:ethr:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb#keyAgreement",
       "type": "X25519KeyAgreementKey2019", 
-      "controller": "did:ens:mainnet:some.eth",
-      "publicKeyMultibase": "z9hFgmPVfmBZwRvFEyniQDBkz9LmV7gDEqytWyGZLmDXE" 
+      "controller": "did:ethr:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb",
+      "blockchainAccountId": "eip155:1:0xab16a96D359eC26a11e2C2b3d8f8B8942d5Bfcdb"
     }
   ],
-  "service": [{
-    "id":"did:ens:mainnet:some.eth#Web3PublicProfile-5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7",
-    "type": "Web3PublicProfile", 
-    "serviceEndpoint": { 
-      "profileService": "ENS",
-      "ensName": "some.eth",
-      "network": "mainnet" 
-    }
-  }],
   "authentication": [
-    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ethr:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb#controller"
   ],
   "assertionMethod": [
-    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
-  ],
-  "capabilityInvocation": [
-    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
-  ],
-  "capabilityDelegation": [
-    "did:ens:mainnet:some.eth#5d3e82eaba0bf8991c38bd092fa5f5523b5b3bf13e06b4b29c0022a094a528d7"
+    "did:ethr:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb#controller"
   ],
   "keyAgreement": [
-    "did:ens:mainnet:some.eth#zC9ByQ8aJs8vrNXyDhPHHNNMSHPcaSgNpjjsBYpMMjsTdS"  
+    "did:ethr:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb#keyAgreement"  
   ]
 }
 ```
 
-The following TEXT records have to be set:
+For `did:ens:goerlie:some.eth` (ENS name on EVM chain other than mainnet)
 
-- `org.w3c.did.verificationRelationship`
-- `org.w3c.did:verificationMethod`
-
-> :warning: Issue [#3](https://github.com/veramolabs/did-ens-spec/issues/3): More details on TEXT records and more examples for other service endpoints and authentication relationships.
-
-### UPDATE
-
-See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to add TEXT records.
-
-> :warning: Issue [#4](https://github.com/veramolabs/did-ens-spec/issues/4): provide more details on ENS TEXT records.
-
-### DELETE
-
-See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to delete ENS names or end the lease.
-
-> :warning: Issue [#4](https://github.com/veramolabs/did-ens-spec/issues/4): provide more details on how the lease ends or ownership is transferred.
+```json
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/secp256k1recovery-2020/v2"
+  ],
+  "id": "did:ens:goerli:some.eth",
+  "verificationMethod": [
+    {
+      "id": "did:ethr:0x5:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb#controller",
+      "type": "EcdsaSecp256k1RecoveryMethod2020",
+      "controller": "did:ethr:0x5:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb",
+      "blockchainAccountId": "eip155:5:0xab16a96D359eC26a11e2C2b3d8f8B8942d5Bfcdb"
+    }
+  ],
+  "authentication": [
+    "did:ethr:0x5:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb#controller"
+  ],
+  "assertionMethod": [
+    "did:ethr:0x5:0xab16a96d359ec26a11e2c2b3d8f8b8942d5bfcdb#controller"
+  ]
+}
+```
 
 ## Privacy Considerations
 
@@ -245,7 +182,7 @@ See [ENS](https://docs.ens.domains/dapp-developer-guide).
 
 When any data (e.g. W3C Verifiable Credentials) is associated with ENS DIDs, sharing that data would also impose sharing the onchain data graph (e.g. transaction history, NFTs etc.) of the ETH account that owns the ENS name.
 
-Using personal identifiable information as DID Method specific identifiers (e.g. alice.eth) discloses personal information every time the DID is shared with a counter party. This specification DOES NOT endorse the use of ENS names that correlate directly with real world human beings. 
+Using personal identifiable information as DID Method specific identifiers (e.g. alice.eth) discloses personal information every time the DID is shared with a counter party. Precaution should be taken when using this DID method to share sensitive information, but could be a good choice for verifiable data that is meant to be public (e.g. social network posts)
 
 > NOTE: The Ethereum community is already using ENS names for individuals (e.g. vitalik.eth).
 
