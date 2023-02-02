@@ -27,9 +27,9 @@ The Ethereum community has established ENS names as their identifiers (see [Ethe
 
 ## DID Method Name
 
-The name string that shall identify this DID method is: ens.
+The name string that shall identify this DID method is: `ens`.
 
-A DID that uses this method MUST begin with the following prefix: did:ens. Per the DID specification, this string MUST be in lowercase. The remainder of the DID, after the prefix, is specified below.
+A DID that uses this method MUST begin with the following prefix: `did:ens`. Per the DID specification, this string MUST be in lowercase. The remainder of the DID, after the prefix, is specified below.
 
 ## Method Specific Identifier
 
@@ -37,7 +37,7 @@ ENS DIDs have the following format:
 
 ```
   DID     := did:ens[:<network>]:<name>
-  network := mainnet | rinkeby | ropsten | goerli | ...
+  network := mainnet | goerli | ...
   name    := <ENS-name>
 ```
 
@@ -87,7 +87,7 @@ See [ENS](https://docs.ens.domains/dapp-developer-guide) on how to register ENS 
 
 ### READ
 
-DID resolution will perform ENS resolution for a given ENS name. Additionally, the DID resolver will then retrieve the DID specific TEXT records for the ENS name and add default values for service endpoints and verification methods.
+DID resolution will perform ENS resolution for a given ENS name and obtain an `ethereumAddress`. Additionally, the DID resolver will then retrieve the DID specific TEXT records for the ENS name and add default values for service endpoints and verification methods.
 
 > :warning: Issue [#4](https://github.com/veramolabs/did-ens-spec/issues/4): provide more details on ENS resolution.
 
@@ -95,20 +95,20 @@ The default verification method will always include the owner of the ENS name as
 
 ```json
 {
-  "id": "<DID-ENS>#<sha256-of-blockchainAccountId>",
+  "id": "<DID-ENS>#<ethereumAddress>",
   "type": "EcdsaSecp256k1RecoveryMethod2020",
   "controller": "<DID-ENS>",
   "blockchainAccountId": "<CAIP-10>"
 }
 ```
 
-The `id` of the default verification method is the concatenation of the ENS DID followed by the `#` and the hex representation of `sha256(blockchainAccountId)`. Additional verification methods that MAY be added MUST not use that verification method `id` and will be ignored in the DID Document.
+The `id` of the default verification method is the concatenation of the ENS DID followed by the `#` and the hex representation of the corresponding `ethereumAddress`. Additional verification methods that MAY be added MUST not use that verification method `id` and will be ignored in the DID Document.
 
 The default service will always include the ENS service as follows:
 
 ```json
 {
-  "id":"<DID-ENS>#Web3PublicProfile-<sha256-of-blockchainAccountId>",
+  "id":"<DID-ENS>#Web3PublicProfile-<ethereumAddress>",
   "type": "Web3PublicProfile", 
   "serviceEndpoint": { 
     "profileService": "ENS",
@@ -118,9 +118,9 @@ The default service will always include the ENS service as follows:
 }
 ```
 
-The `id` of the default service is the concatenation of the ENS DID followed by the `#Web3PublicProfile-` and the hex representation of `sha256(blockchainAccountId)`. Additional services that MAY be added MUST not use that service `id` and will be ignored in the DID Document.
+The `id` of the default service is the concatenation of the ENS DID followed by the `#Web3PublicProfile-` and the hex representation of the corresponding `ethereumAddress`. Additional services that MAY be added MUST not use that service `id` and will be ignored in the DID Document.
 
-If the DID specific TEXT records are malformed, the entire TEXT record will be ignored in the DID resolution process.
+If the DID specific TEXT records are malformed, the entire TEXT record MUST be ignored in the DID resolution process.
 
 See ENS on how to resolve ENS names and how to resolve TEXT records for ENS names.
 
